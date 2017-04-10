@@ -14,6 +14,19 @@ using namespace std;
 using namespace log4cplus;
 using namespace log4cplus::helpers;
 
+#ifndef WIN32
+  #include <unistd.h>
+#endif
+
+void sleep_for_one_second()
+{
+#ifdef __linux__
+  usleep(1000);
+#else
+  std::this_thread::sleep_for (std::chrono::seconds (1));
+#endif
+}
+
 int
 main()
 {
@@ -34,19 +47,19 @@ main()
         Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("test.a.long_logger_name.c.logger"));
         LOG4CPLUS_DEBUG(logger, "This is the FIRST log message...");
 
-        std::this_thread::sleep_for (std::chrono::seconds (1));
+        sleep_for_one_second();
         {
             NDCContextCreator ndc(LOG4CPLUS_TEXT("second"));
             LOG4CPLUS_INFO(logger, "This is the SECOND log message...");
         }
 
-        std::this_thread::sleep_for (std::chrono::seconds (1));
+        sleep_for_one_second();
         LOG4CPLUS_WARN(logger, "This is the THIRD log message...");
 
-        std::this_thread::sleep_for (std::chrono::seconds (1));
+        sleep_for_one_second();
         LOG4CPLUS_ERROR(logger, "This is the FOURTH log message...");
 
-        std::this_thread::sleep_for (std::chrono::seconds (1));
+        sleep_for_one_second();
         LOG4CPLUS_FATAL(logger, "This is the FIFTH log message...");
     }
     catch(...) {

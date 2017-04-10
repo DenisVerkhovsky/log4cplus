@@ -6,6 +6,11 @@
 #include <log4cplus/initializer.h>
 #include <thread>
 
+#ifndef WIN32
+  #include <unistd.h>
+#endif
+
+
 using namespace std;
 using namespace log4cplus;
 using namespace log4cplus::helpers;
@@ -47,7 +52,11 @@ main()
             printMsgs(log_1);
             printMsgs(log_2);
             printMsgs(log_3);
-            std::this_thread::sleep_for (std::chrono::seconds (1));
+        #ifdef __linux__
+            usleep(1000);
+        #else
+            std::this_thread::sleep(boost::chrono::milliseconds(1));
+        #endif
         }
     }
     catch(...) {

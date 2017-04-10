@@ -12,6 +12,9 @@
 #include <exception>
 #include <iostream>
 #include <string>
+#ifndef WIN32
+  #include <unistd.h>
+#endif
 
 
 using namespace std;
@@ -39,7 +42,11 @@ public:
         {
             log4cplus::thread::MutexGuard guard (mutex);
             LOG4CPLUS_INFO(logger, LOG4CPLUS_TEXT("Actually doing something..."));
-            std::this_thread::sleep_for (std::chrono::milliseconds (75));
+            #ifdef __linux__
+                usleep(75 * 1000);
+            #else
+                std::this_thread::sleep_for (std::chrono::milliseconds (75));
+            #endif
             LOG4CPLUS_INFO_FMT(logger,
                 LOG4CPLUS_TEXT (
                     "Actually doing something...%d, %d, %d, %ls...DONE"),
