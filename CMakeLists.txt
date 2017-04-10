@@ -12,6 +12,9 @@ endif ()
 set (CMAKE_LEGACY_CYGWIN_WIN32 0)
 
 project (log4cplus)
+set(PROJECT_VERSION 2.0.0)
+
+project (log4cplus)
 cmake_minimum_required (VERSION 2.8.4)
 
 enable_language (CXX)
@@ -23,6 +26,9 @@ log4cplus_get_version ("${PROJECT_SOURCE_DIR}/include"
 message("-- Generating build for Log4cplus version ${log4cplus_version_major}.${log4cplus_version_minor}.${log4cplus_version_patch}")
 set (log4cplus_soversion 0)
 set (log4cplus_postfix "")
+
+configure_file("${CMAKE_SOURCE_DIR}/pkg-config.pc.cmake"
+               "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc")
 
 option(LOG4CPLUS_BUILD_TESTING "Build the test suite." ON)
 
@@ -151,5 +157,7 @@ endif (LOG4CPLUS_QT4)
 if (LOG4CPLUS_QT5)
   add_subdirectory (qt5debugappender)
 endif (LOG4CPLUS_QT5)
+
+install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc" DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig/")
 
 include(Log4CPlusCPack.cmake)
