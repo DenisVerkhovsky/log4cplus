@@ -12,16 +12,12 @@
 #include <exception>
 #include <iostream>
 #include <string>
-#ifndef WIN32
-  #include <unistd.h>
-#endif
-
+#include <log4cplus/utils.h>
 
 using namespace std;
 using namespace log4cplus;
 using namespace log4cplus::helpers;
 using namespace log4cplus::thread;
-
 
 #define NUM_THREADS 4
 #define NUM_LOOPS 10
@@ -42,11 +38,7 @@ public:
         {
             log4cplus::thread::MutexGuard guard (mutex);
             LOG4CPLUS_INFO(logger, LOG4CPLUS_TEXT("Actually doing something..."));
-            #ifdef __linux__
-                usleep(75 * 1000);
-            #else
-                std::this_thread::sleep_for (std::chrono::milliseconds (75));
-            #endif
+                Utils::sleep_for (std::chrono::milliseconds (75));
             LOG4CPLUS_INFO_FMT(logger,
                 LOG4CPLUS_TEXT (
                     "Actually doing something...%d, %d, %d, %ls...DONE"),

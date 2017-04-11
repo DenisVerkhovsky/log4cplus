@@ -191,6 +191,7 @@ install(FILES ../include/log4cplus/appender.h
               ../include/log4cplus/tracelogger.h
               ../include/log4cplus/tstring.h
               ../include/log4cplus/version.h
+              ../include/log4cplus/utils.h
               ../include/log4cplus/win32debugappender.h
               ../include/log4cplus/win32consoleappender.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/log4cplus )

@@ -23,10 +23,7 @@
 
 #include <log4cplus/helpers/connectorthread.h>
 #include <log4cplus/helpers/loglog.h>
-
-#ifndef WIN32
-  #include <unistd.h>
-#endif
+#include <log4cplus/utils.h>
 
 #if ! defined (LOG4CPLUS_SINGLE_THREADED)
 
@@ -93,11 +90,7 @@ ConnectorThread::run ()
             // so that we do not try to reconnect after each logging attempt
             // which could be many times per second.
             
-            #ifdef __linux__
-              usleep(5000);
-            #else
-              std::this_thread::sleep(boost::chrono::milliseconds(5));
-            #endif
+             Utils::sleep_for(std::chrono::milliseconds(5));
 
             continue;
         }

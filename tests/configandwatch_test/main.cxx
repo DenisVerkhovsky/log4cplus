@@ -4,12 +4,8 @@
 #include <log4cplus/helpers/stringhelper.h>
 #include <log4cplus/loggingmacros.h>
 #include <log4cplus/initializer.h>
+#include <log4cplus/utils.h>
 #include <thread>
-
-#ifndef WIN32
-  #include <unistd.h>
-#endif
-
 
 using namespace std;
 using namespace log4cplus;
@@ -52,11 +48,7 @@ main()
             printMsgs(log_1);
             printMsgs(log_2);
             printMsgs(log_3);
-        #ifdef __linux__
-            usleep(1000);
-        #else
-            std::this_thread::sleep(boost::chrono::milliseconds(1));
-        #endif
+            Utils::sleep_for(std::chrono::milliseconds(1));
         }
     }
     catch(...) {
