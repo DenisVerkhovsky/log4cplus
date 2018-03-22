@@ -54,7 +54,7 @@ namespace log4cplus {
     class LOG4CPLUS_EXPORT ConsoleAppender : public Appender {
     public:
       // Ctors
-        ConsoleAppender(bool logToStdErr = false, bool immediateFlush = false);
+        ConsoleAppender(bool logToStdErr = true, bool immediateFlush = false);
         ConsoleAppender(const log4cplus::helpers::Properties & properties);
 
       // Dtor

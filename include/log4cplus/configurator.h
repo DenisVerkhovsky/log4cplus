@@ -321,7 +321,7 @@ namespace log4cplus
     public:
       // ctor and dtor
         BasicConfigurator(Hierarchy& h = Logger::getDefaultHierarchy(),
-            bool logToStdErr = false);
+            bool logToStdErr = true);
         virtual ~BasicConfigurator();
 
         /**
@@ -334,7 +334,7 @@ namespace log4cplus
          * </pre></code>
          */
         static void doConfigure(Hierarchy& h = Logger::getDefaultHierarchy(),
-            bool logToStdErr = false);
+            bool logToStdErr = true);
 
         //! Property name for disable override.
         static log4cplus::tstring const DISABLE_OVERRIDE_KEY;

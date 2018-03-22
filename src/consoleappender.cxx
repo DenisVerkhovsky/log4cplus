@@ -63,7 +63,7 @@ ConsoleAppender::ConsoleAppender(bool logToStdErr_,
 
 ConsoleAppender::ConsoleAppender(const helpers::Properties & properties)
 : Appender(properties),
-  logToStdErr(false),
+  logToStdErr(true),
   immediateFlush(false)
 {
     properties.getBool (logToStdErr, LOG4CPLUS_TEXT("logToStdErr"));
