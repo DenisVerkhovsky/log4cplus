@@ -56,7 +56,7 @@ namespace log4cplus
 {
 
 
-void initializeLog4cplus();
+void initializeLog4cplus(std::size_t numOfThreads = std::thread::hardware_concurrency() * 2);
 
 
 namespace

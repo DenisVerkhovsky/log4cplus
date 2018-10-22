@@ -130,6 +130,9 @@ namespace
 //! Default context.
 struct DefaultContext
 {
+    DefaultContext(std::size_t numOfThreads = std::thread::hardware_concurrency() * 2)
+        :thread_pool(new progschj::ThreadPool(numOfThreads))
+    {}
     log4cplus::thread::Mutex console_mutex;
     helpers::LogLog loglog;
     LogLevelManager log_level_manager;
@@ -173,7 +176,7 @@ LOG4CPLUS_INIT_PRIORITY (LOG4CPLUS_INIT_PRIORITY_BASE + 1);
 
 static
 void
-alloc_dc ()
+alloc_dc (std::size_t numOfThreads = std::thread::hardware_concurrency() * 2)
 {
     assert (! default_context);
     assert (default_context_state == DC_UNINITIALIZED);
@@ -185,7 +188,7 @@ alloc_dc ()
     if (default_context_state == DC_INITIALIZED)
         throw std::logic_error ("alloc_dc() called in DC_INITIALIZED state.");
 
-    default_context = new DefaultContext;
+    default_context = new DefaultContext(numOfThreads);
 
     if (default_context_state == DC_DESTROYED)
         default_context->loglog.error (
@@ -199,10 +202,10 @@ alloc_dc ()
 
 static
 DefaultContext *
-get_dc (bool alloc = true)
+get_dc (std::size_t numOfThreads = std::thread::hardware_concurrency() * 2, bool alloc = true)
 {
     if (LOG4CPLUS_UNLIKELY (! default_context && alloc))
-        alloc_dc ();
+        alloc_dc (numOfThreads);
     return default_context;
 }
 
@@ -469,7 +472,7 @@ threadSetup ()
 
 
 void
-initializeLog4cplus()
+initializeLog4cplus(std::size_t numOfThreads = std::thread::hardware_concurrency() * 2)
 {
     static bool initialized = false;
     if (initialized)
@@ -478,7 +481,7 @@ initializeLog4cplus()
     internal::tls_storage_key = thread::impl::tls_init (ptd_cleanup_func);
     threadSetup ();
 
-    DefaultContext * dc = get_dc (true);
+    DefaultContext * dc = get_dc (numOfThreads, true);
     dc->TTCCLayout_time_base = helpers::now ();
     Logger::getRoot();
     initializeFactoryRegistry();
@@ -488,9 +491,9 @@ initializeLog4cplus()
 
 
 void
-initialize ()
+initialize (std::size_t numOfThreads)
 {
-    initializeLog4cplus ();
+    initializeLog4cplus (numOfThreads);
 }
 
 
