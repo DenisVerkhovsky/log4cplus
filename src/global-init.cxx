@@ -489,12 +489,20 @@ initializeLog4cplus(std::size_t numOfThreads = std::thread::hardware_concurrency
     initialized = true;
 }
 
-
+#if defined (LOG4CPLUS_SINGLE_THREADED)
+LOG4CPLUS_EXPORT void initialize ();
+void
+initialize (std::size_t numOfThreads)
+{
+    initializeLog4cplus (1);
+}
+#else
 void
 initialize (std::size_t numOfThreads)
 {
     initializeLog4cplus (numOfThreads);
 }
+#endif
 
 
 void

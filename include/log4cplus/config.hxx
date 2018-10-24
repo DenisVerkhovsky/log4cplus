@@ -168,11 +168,11 @@
 #define LOG4CPLUS_INIT_PRIORITY_BASE (65535 / 2)
 
 #include <log4cplus/helpers/thread-config.h>
-#include <thread>
 
 #if defined (LOG4CPLUS_SINGLE_THREADED)
 #define LOG4CPLUS_THREADED(x)
 #else
+#include <thread>
 #define LOG4CPLUS_THREADED(x) x
 #endif
 
@@ -188,7 +188,11 @@ namespace log4cplus
 LOG4CPLUS_EXPORT void threadCleanup ();
 
 //! Initializes log4cplus.
+#if defined (LOG4CPLUS_SINGLE_THREADED)
+LOG4CPLUS_EXPORT void initialize ();
+#else
 LOG4CPLUS_EXPORT void initialize (std::size_t numOfThreads = std::thread::hardware_concurrency() * 2);
+#endif
 
 } // namespace log4cplus
 
